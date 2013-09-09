@@ -16,5 +16,4 @@ app.config ($routeProvider) ->
       });
 
 app.run ($rally) ->
-  debugger
   $rally.app 'SampleApp'
