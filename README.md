@@ -1,13 +1,17 @@
 angular-appsdk
 ==============
 
-Angular bindings and directives for the Rally App SDK
+Angular bindings and directives for the Rally App SDK and ExtJS. The goal of this project is to support smooth and 
+seamless interoperability of AngularJS and the ExtJS based App SDK.
 
-Configs
+Attributes and Configs
 -------
 Ext components and widgets are created in code, but we want to leverage Angular's support for attributes. 
 While angular makes it easy enough to define interpolated, evaluated, and isolate scope bound attributes,
 it's not simple to do this dynamically nor where the value type is unknown.
+
+The value of all attributes (except explicitly stated special ones) will be passed as a part of the config object
+to Ext.create().
 
 ### Interpolation
 This is the default behavior for config attributes. Standard attributes will be compiled and evaluated as strings.
@@ -32,15 +36,37 @@ parent scope, and a two-way binding will be set up with the component's property
 ### Special attributes
 In order to configure components with some reasonable defaults, there are a few special directive attributes.
 
-- bindTo: A variable name on the parent scope to bind the ext component to.
-- renderTo:
-  - false or empty: Doesn't set the config at all (You'll probably need to use 'add'
-  - true: sets 'renderTo' to the directives HTML element
-  - string: passes the id through to the Ext renderTo config
-- add:
-  - false or empty: No behavior. You probably want to use 'renderTo' in this case
-  - true: Adds this component to the parent directive (assuming the parent is a container)
-  - string: Add this component to the component found at given property on the parent scope (Least likely)
+- config - An angular expression that returns an object used for Ext.create(). All other config attributes will be added to this config object with ```configs = _.extend(configs, attributeValue)```
+  - example - config="{title:myTitle}"
+- bindTo - A variable name on the parent scope to bind the ext component to.
+- renderTo - Establishes what DOM element to render the component to.
+  - ```false``` or ```''```: Doesn't set the config at all (You'll probably need to use 'add')
+  - ```true```: sets 'renderTo' to the directives HTML element.
+  - ```[string]```: passes the id through to the Ext renderTo config.
+- add - For adding components to parent containers.
+  - ```false``` or ```''```: No behavior. You probably want to use 'renderTo' in this case.
+  - ```true```: Adds this component to the immediate parent directive/component (assuming the parent is a container)
+  - ```[string]```: Add this component to the component found at given property on the parent scope (Least likely)
+
+TODO
+----
+
+- [ ] Hungarian style attribute evaluation
+  - [ ] Interpolated attributes
+  - [ ] Evaluated attributes
+  - [ ] Two-way binding
+- [ ] Virtual element directives that add to parent 'items'
+
+Angular's Digest and Ext Events
+-------------------------------
+Angular recalculates values and performs new actions according to its digest cycle. In order to notify angular when
+an ext event has occured, all ext components created will have global event listeners attached to them that perform
+a $digest as well as $emit those events on the parent scope.
+
+```var extComponent = $rally.bind($scope, Ext.create(...));```
+
+### TODO
+[ ] - Determine what scope events are emitted to. Isolate wouldn't make sense, they'll probably need to be prefixed (if emitted at all).
 
 Motivation
 ----------
@@ -56,6 +82,9 @@ $scope.title = 'Border Layout';
 	<ext-component title="Center Region" xtype="panel" region="center" layout="fit" margins="5 5 0 0"/>
 </ext-component>
 ```
+
+### TODO
+[ ] - Determine how child elements get rolled into 'items' for their parent. Shouldn't this be the default behavior?
 
 Instead of this
 
@@ -92,8 +121,10 @@ var panelVar = Ext.create('Ext.panel.Panel', {
     renderTo: Ext.getBody()
 });
 ```
+And, to allow the App SDK to effortlessly include angular apps and components.
+```
+Ext.create('Rally.anuglar.app', {module: 'myModule'})
+```
 
-TODO
-- [ ] Hungarian style attribute evaluation
-- [ ] Virtual element directives that add to parent 'items'
+### TODO
 - [ ] Ext containers with compilable html templates
