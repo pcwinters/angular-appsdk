@@ -69,6 +69,17 @@ a $digest as well as $emit those events on the parent scope.
 ### TODO
 [ ] - Determine what scope events are emitted to. Isolate wouldn't make sense, they'll probably need to be prefixed (if emitted at all).
 
+DataStores
+----------
+???
+Things like find() and datastore results can be set up as functions.
+```javascript
+$scope.results = function() { return store.find(...) }
+```
+
+Stores should be observables that can be bound to the digest cycle just like components. They'll get constructed 
+on the scope and manipulated with $watch if they need to be bound to things like filter changes.
+
 Motivation
 ----------
 The goal is to be able to do the following
