@@ -38,7 +38,7 @@ parent scope, and a two-way binding will be set up with the component's property
 In order to configure components with some reasonable defaults, there are a few special directive attributes.
 
 - config - An angular expression that returns an object used for Ext.create(). All other config attributes will be added to this config object with ```configs = _.extend(configs, attributeValue)```
-  - example - config="{title:myTitle}"
+  - example - ```config="{title:myTitle}"```
 - bindTo - A variable name on the parent scope to bind the ext component to.
 - renderTo - Establishes what DOM element to render the component to.
   - ```false``` or ```''```: Doesn't set the config at all (You'll probably need to use 'add')
