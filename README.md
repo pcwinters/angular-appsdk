@@ -85,7 +85,8 @@ $scope.title = 'Border Layout';
 ```
 
 ### TODO
-[ ] - Determine how child elements get rolled into 'items' for their parent. Shouldn't this be the default behavior?
+- [ ] - Determine how child elements get rolled into 'items' for their parent. Shouldn't this be the default behavior?
+- [ ] - Component directive that includes child html as 'template' for creating containers with markup
 
 Instead of this
 
@@ -128,4 +129,4 @@ Ext.create('Rally.anuglar.app', {module: 'myModule'})
 ```
 
 ### TODO
-- [ ] Ext containers with compilable html templates
+- [ ] Create an ext container class to bootstrap angular.
