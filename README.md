@@ -5,6 +5,12 @@ Angular bindings and directives for the Rally App SDK and ExtJS. The goal of thi
 seamless interoperability of AngularJS and the ExtJS based App SDK. While it might be useful as a general angular/ext 
 adapter, the primary purpose is to support the patterns and style of usage observed within Rally app development.
 
+TODO
+----
+
+- [ ] Build distribution script
+- [ ] Bower file with version
+
 Attributes and Configs
 -------
 Ext components and widgets are created in code, but we want to leverage Angular's support for attributes. 
