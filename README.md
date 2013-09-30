@@ -11,6 +11,25 @@ TODO
 - [ ] Build distribution script
 - [ ] Bower file with version
 
+Use Angular in ExtJS
+====================
+
+We've extended ```Ext.Component``` to bootstrap an angular module anywhere within your ext app.
+The component will very simple call [angular.bootstrap](http://docs.angularjs.org/api/angular.bootstrap) 
+on the component's element after it renders and set up event bubbling between Ext and Angular.
+
+```javascript
+template = new Ext.XTemplate('<div ng-controller="MyController"/>');
+Ext.create('Angular.Component', {
+	module: 'myModule',
+	renderTo: 'angular-container',
+	renderTpl: template
+})
+```
+
+Use ExtJS in Angular
+====================
+
 Attributes and Configs
 -------
 Ext components and widgets are created in code, but we want to leverage Angular's support for attributes. 
