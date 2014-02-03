@@ -34,5 +34,5 @@ angular.module('rally.app.iframe.services.messagebus', []).service '$messageBus'
 			@$window.addEventListener("message", @onParentMessage, false)
 
 		onParentMessage: ({source, data}) =>
-			if @window isnt source
+			if @$window isnt source
 				@publish(data.name, data.data)

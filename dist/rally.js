@@ -4,7 +4,7 @@ var IframeAppService,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 angular.module('rally.app.iframe.services.appService', ['rally.app.iframe.services.messagebus']).service('AppService', IframeAppService = (function() {
-  IframeAppService.$inject = ['$window', '$messageBus'];
+  IframeAppService.$inject = ['$messageBus'];
 
   function IframeAppService($messageBus) {
     this.$messageBus = $messageBus;
@@ -12,7 +12,7 @@ angular.module('rally.app.iframe.services.appService', ['rally.app.iframe.servic
   }
 
   IframeAppService.prototype.register = function($rootScope) {
-    return this.$messageBus.subscribe('*', (function(_this) {
+    return this.$messageBus.subscribe('objectupdate', (function(_this) {
       return function(type, data) {
         return $rootScope.broadcast(type, data);
       };
@@ -85,7 +85,7 @@ angular.module('rally.app.iframe.services.messagebus', []).service('$messageBus'
   IframeMessageBus.prototype.onParentMessage = function(_arg) {
     var data, source;
     source = _arg.source, data = _arg.data;
-    if (this.window !== source) {
+    if (this.$window !== source) {
       return this.publish(data.name, data.data);
     }
   };
