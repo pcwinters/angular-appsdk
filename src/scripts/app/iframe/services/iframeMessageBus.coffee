@@ -8,7 +8,7 @@ angular.module('rally.app.iframe.services.messageBus', ['rally.app.iframe.decora
 
 		onScopeMessage: (wildcard, eventName, args...) =>
 			event = {name:eventName, args:args}
-			@$window.parent.postMessage(event, "*")
+			@$window.parent?.postMessage(event, "*")
 
 		onParentMessage: (event) =>
 			{source, data} = event

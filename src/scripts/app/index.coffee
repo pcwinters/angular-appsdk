@@ -1,1 +1,1 @@
-angular.module('rally.app', ['rally.app.iframe'])
+angular.module('rally.app', [])
