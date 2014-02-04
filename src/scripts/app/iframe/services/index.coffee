@@ -1,1 +1,1 @@
-angular.module('rally.app.iframe.services', ['rally.app.iframe.services.messagebus', 'rally.app.iframe.services.appService'])
+angular.module('rally.app.iframe.services', ['rally.app.iframe.services.messageBus', 'rally.app.iframe.services.appService'])

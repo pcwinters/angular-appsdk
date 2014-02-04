@@ -11,6 +11,7 @@ module.exports = function(config) {
 		files: [
 			'bower_components/angular/angular.js',
 			'bower_components/angular-mocks/angular-mocks.js',
+			'bower_components/jasmine.async/lib/jasmine.async.js',
 			
 			'src/scripts/**/*.js',
 			'src/scripts/**/*.coffee',
