@@ -7,10 +7,13 @@ angular.module('rally.app.iframe.services.messageBus', ['rally.app.iframe.decora
 			@$rootScope.$on('*', @onScopeMessage)
 
 		onScopeMessage: (wildcard, eventName, args...) =>
-			event = {name:eventName, args:args}
-			@$window.parent?.postMessage(event, "*")
+			if eventName.indexOf("rally:") is 0
+				eventName = eventName.replace("rally:","")
+				event = {name:eventName, args:args}
+				@$window.parent?.postMessage(event, "*")
 
 		onParentMessage: (event) =>
 			{source, data} = event
-			args = [data.name].concat(data.args)
+			name = "rally:#{data.name}"
+			args = [name].concat(data.args)
 			@$rootScope.$broadcast.apply(@$rootScope, args)
