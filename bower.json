@@ -12,6 +12,7 @@
     "lodash": "latest"
   },
   "devDependencies": {
-    "angular-mocks": "latest"
+    "angular-mocks": "latest",
+    "jasmine.async": "derickbailey/jasmine.async#~0.1.0"
   }
 }

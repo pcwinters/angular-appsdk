@@ -54,6 +54,11 @@ module.exports = (grunt) ->
 		karma:
 			unit:
 				configFile: 'karma.conf.js'
+		
+		watch:
+			build:
+				files: ['src/**/*.*']
+				tasks: ['test', 'dist']
 
 	grunt.registerTask('build', ['clean', 'copy:build', 'coffee', 'jade:views'])
 	grunt.registerTask('dist', ['build', 'concat:dist'])

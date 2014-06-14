@@ -3,14 +3,14 @@
   "version": "0.0.0",
   "author": "pwinters@rallydev.com",
   "dependencies": {
-    "jade": "latest",    
-    "lodash": "latest"    
+    "jade": "latest",
+    "lodash": "latest"
   },
   "devDependencies": {
     "coffee-script": "latest",
     "nock": "latest",
     "karma": "latest",
-    "grunt": "latest",
+    "grunt": "~0.4.2",
     "grunt-cli": "latest",
     "grunt-karma": "latest",
     "matchdep": "latest",
@@ -24,6 +24,7 @@
     "grunt-contrib-jade": "latest",
     "grunt-contrib-copy": "latest",
     "karma-coffee-preprocessor": "latest",
-    "karma-ng-html2js-preprocessor": "latest"    
+    "karma-ng-html2js-preprocessor": "latest",
+    "grunt-contrib-watch": "~0.5.3"
   }
 }
