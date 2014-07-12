@@ -1,6 +1,5 @@
-angular.module('rally.services.rally', ['Ext', 'Rally']).service '$rally',
-	
-	class RallyService
+angular.module('rally.app.services.rally', ['Ext', 'Rally']).service '$rally',	
+	class RallyAppService
 		
 		constructor: (@$q, @$rootScope, @$log, @Ext, @Rally) ->
 
