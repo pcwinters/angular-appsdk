@@ -104,6 +104,110 @@ angular.module('rally.api.services.wsapi', ['rally.api.services.slm', 'rally.uti
   return this;
 });
 
+angular.module('rally.api.wsapi', ['rally.api.services.wsapi', 'rally.api.wsapi.projects']);
+
+var RallyApiWsapiProjects,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+angular.module('rally.api.wsapi.projects', ['rally.util.http.services.promise', 'rally.api.services.wsapi', 'rally.util.async']).run(function($wsapi, rallyApiWsapiProjects) {
+  return $wsapi.projects = rallyApiWsapiProjects;
+}).service('rallyApiWsapiProjects', RallyApiWsapiProjects = (function() {
+  function RallyApiWsapiProjects($q, $wsapi, httpPromise) {
+    this.$q = $q;
+    this.$wsapi = $wsapi;
+    this.httpPromise = httpPromise;
+    this._scopeUp = __bind(this._scopeUp, this);
+    this._scopeDown = __bind(this._scopeDown, this);
+    this.scope = __bind(this.scope, this);
+    this.children = __bind(this.children, this);
+    this.concurrencyLimit = 4;
+  }
+
+  /*
+  		@param {object} projectScope - an object with 'oid' and 'workspaceOid' properties
+  			Workspaces should have identical oid and workspaceOid
+  */
+
+
+  RallyApiWsapiProjects.prototype.children = function(projectScope, onlyOpen) {
+    var type, url;
+    if (onlyOpen == null) {
+      onlyOpen = true;
+    }
+    type = projectScope.oid === projectScope.workspaceOid ? 'workspace' : 'project';
+    url = "/" + type + "/" + projectScope.oid + "/Children";
+    if (onlyOpen) {
+      url += '?query=(State != "Closed")';
+    }
+    return this.httpPromise.asArray(this.$wsapi({
+      url: url,
+      method: 'JSONP',
+      params: {
+        'jsonp': 'JSON_CALLBACK'
+      }
+    }).then(function(response) {
+      return response.data.QueryResult.Results;
+    }));
+  };
+
+  /*
+  		@param {object} projectScope - an object with 'oid' and 'workspaceOid' properties
+  			Workspaces should have identical oid and workspaceOid
+  		@param {string} direction - 'up' or 'down' [default] to load a project tree
+  */
+
+
+  RallyApiWsapiProjects.prototype.scope = function(projectScope, direction) {
+    if (direction == null) {
+      direction = 'down';
+    }
+    switch (direction) {
+      case 'down':
+        return this._scopeDown(projectScope);
+      case 'up':
+        return this._scopeUp(projectScope);
+    }
+  };
+
+  RallyApiWsapiProjects.prototype._scopeDown = function(projectScope, concurrency) {
+    var deferred, queue,
+      _this = this;
+    if (concurrency == null) {
+      concurrency = this.concurrencyLimit;
+    }
+    deferred = this.$q.defer();
+    queue = async.queue(function(_arg, callback) {
+      var projectScope;
+      projectScope = _arg.projectScope;
+      deferred.notify(projectScope);
+      projectScope.children = _this.children(projectScope);
+      projectScope.name = projectScope.Name;
+      return projectScope.children.$promise.then(function(children) {
+        _.each(children, function(child) {
+          child.oid = child.ObjectID;
+          child.workspaceOid = projectScope.workspaceOid;
+          return queue.push({
+            projectScope: child
+          });
+        });
+        return callback();
+      });
+    }, concurrency);
+    queue.drain = function() {
+      return deferred.resolve();
+    };
+    queue.push({
+      projectScope: projectScope
+    });
+    return deferred.promise;
+  };
+
+  RallyApiWsapiProjects.prototype._scopeUp = function(projectScope) {};
+
+  return RallyApiWsapiProjects;
+
+})());
+
 var __slice = [].slice;
 
 angular.module('rally.app.iframe.decorators.rootScope', []).config(function($provide) {
@@ -339,7 +443,38 @@ angular.module('rally.util.http.factories.httpWrapper', ['rally.util.lodash']).f
   };
 });
 
-angular.module('rally.util.http', ['rally.util.http.factories.httpWrapper']);
+angular.module('rally.util.http', ['rally.util.http.factories.httpWrapper', 'rally.util.http.services.promise']);
+
+var HttpPromise;
+
+angular.module('rally.util.http.services.promise', ['rally.util.lodash']).service('httpPromise', HttpPromise = (function() {
+  function HttpPromise() {}
+
+  HttpPromise.prototype.asArray = function(promise) {
+    var data;
+    data = [];
+    data.$promise = promise;
+    promise.then(function(results) {
+      return _.each(results, function(r) {
+        return data.push(r);
+      });
+    });
+    return data;
+  };
+
+  HttpPromise.prototype.asObject = function(promise) {
+    var data;
+    data = {};
+    data.$promise = promise;
+    promise.then(function(result) {
+      return _.merge(data, result);
+    });
+    return data;
+  };
+
+  return HttpPromise;
+
+})());
 
 angular.module('rally.util.lodash', ['rally.util.lodash.sortedInsert']);
 
