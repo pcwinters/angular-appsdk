@@ -5,7 +5,8 @@
     "node_modules",
     "bower_components",
     "test",
-    "src"
+    "src",
+    "build"
   ],
   "dependencies": {
     "angular": "~1.2.0",

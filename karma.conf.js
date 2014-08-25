@@ -9,13 +9,14 @@ module.exports = function(config) {
 
 		// list of files / patterns to load in the browser
 		files: [
-			'bower_components/angular/angular.js',
+			'bower_components/lodash/dist/lodash.min.js',
+			'bower_components/angular/angular.min.js',
 			'bower_components/angular-mocks/angular-mocks.js',
 			'bower_components/jasmine.async/lib/jasmine.async.js',
 			
-			'src/scripts/**/*.js',
-			'src/scripts/**/*.coffee',
-			'src/views/**/*.html',
+			'src/**/*.js',
+			'src/**/*.coffee',
+			'src/**/*.html',
 			'test/**/*.js',
 			'test/**/*.coffee'
 		],
@@ -26,7 +27,7 @@ module.exports = function(config) {
 		},
 
 		ngHtml2JsPreprocessor: {
-			stripPrefix: '<%= src %>/views/',
+			stripPrefix: '<%= src %>/',
 			prependPredix: 'templates/',
 			moduleName: 'rally.templates'
 		},

@@ -13,7 +13,7 @@ module.exports = (grunt) ->
 		copy:
 			build:
 				cwd: '<%= src %>/'
-				src: ['scripts/**/*.js', 'scripts/**/*.coffee', 'views/**/*']
+				src: ['**/*.js', '**/*.coffee', '**/*.html', '**/*.jade']
 				dest: '<%= build %>/'
 				expand: true
 		
@@ -22,7 +22,7 @@ module.exports = (grunt) ->
 			dist:
 				files:
 					'<%= dist %>/rally.js': [
-						'<%= build %>/scripts/**/*.js'
+						'<%= build %>/**/*.js'
 					]
 
 		clean:
@@ -35,9 +35,9 @@ module.exports = (grunt) ->
 					bare: true
 				expand: true
 				flatten: false
-				cwd: '<%= build %>/scripts'
+				cwd: '<%= build %>'
 				src: '**/*.coffee'
-				dest: '<%= build %>/scripts/'
+				dest: '<%= build %>'
 				ext: '.js'
 
 		# Compile all Jade templates
@@ -45,8 +45,8 @@ module.exports = (grunt) ->
 			views:
 				files: [{
 					expand: true
-					cwd: '<%= build %>/views'
-					dest: '<%= build %>/views/'
+					cwd: '<%= build %>'
+					dest: '<%= build %>'
 					ext: '.html'
 					src: ["**/*.jade"]
 				}]
@@ -62,5 +62,5 @@ module.exports = (grunt) ->
 
 	grunt.registerTask('build', ['clean', 'copy:build', 'coffee', 'jade:views'])
 	grunt.registerTask('dist', ['build', 'concat:dist'])
-	grunt.registerTask('test', ['build', 'karma:unit'])
-	grunt.registerTask('default', ['build', 'test'])
+	grunt.registerTask('test', ['karma:unit'])
+	grunt.registerTask('default', ['test', 'dist'])
