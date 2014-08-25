@@ -1,6 +1,6 @@
 {
-  "name": "angular-appsdk",
-  "version": "0.0.0",
+  "name": "rally-angular-appsdk",
+  "version": "0.0.1",
   "author": "pwinters@rallydev.com",
   "dependencies": {
     "jade": "latest",
